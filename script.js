@@ -210,7 +210,7 @@ function spawnPetals() {
    COUNTDOWN
    ============================================================ */
 function initCountdown() {
-  const target = new Date('2026-05-1T18:00:00');
+  const target = new Date('2026-05-01T18:00:00');
 
   function tick() {
     const diff = Math.abs(target - Date.now());
