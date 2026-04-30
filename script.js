@@ -231,17 +231,43 @@ function initGuestbook() {
   $('#sendWishBtn').addEventListener('click', () => {
     const val = textarea.value.trim();
     if (!val) { textarea.focus(); return; }
-    // Store locally (or send to backend if available)
-    const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-    wishes.push({ text: val, ts: Date.now() });
-    localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
+    const submitBtn = $('#sendWishBtn');
+    const originalContent = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span>Sending...</span>';
+    submitBtn.disabled = true;
 
-    gsap.to('.guestbook-glass', { y: -4, duration: 0.15, yoyo: true, repeat: 1 });
-    textarea.value = '';
-    charCount.textContent = `0 / ${MAX}`;
-    const success = $('#wishSuccess');
-    success.classList.add('visible');
-    gsap.from(success, { opacity: 0, y: 10, duration: 0.6, ease: 'power2.out' });
+    const messageText = `🎊 New Wedding RSVP
+💍 Event: Wedding of Ahmed & Sara
+👤 Guest Name: Anonymous
+✅ Attendance: N/A
+👥 Number of Guests: N/A
+📝 Message Type: Secret Message
+🤫 Message Content: ${val}`;
+
+    const token = '8789687204:AAGUWQwHK1n08z4GPG30odQ8cTR16vK6WUw';
+    const chatId = '5577896692';
+    const tgUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
+
+    fetch(tgUrl, { method: 'POST' })
+      .then(response => {
+        if (response.ok) {
+          gsap.to('.guestbook-glass', { y: -4, duration: 0.15, yoyo: true, repeat: 1 });
+          textarea.value = '';
+          charCount.textContent = `0 / ${MAX}`;
+          const success = $('#wishSuccess');
+          success.classList.add('visible');
+          gsap.from(success, { opacity: 0, y: 10, duration: 0.6, ease: 'power2.out' });
+        } else {
+          alert('Oops! There was a problem sending your secret message.');
+        }
+      })
+      .catch(error => {
+        alert('Oops! A network error occurred.');
+      })
+      .finally(() => {
+        submitBtn.innerHTML = originalContent;
+        submitBtn.disabled = false;
+      });
   });
 }
 
@@ -271,25 +297,46 @@ function initRSVP() {
       return;
     }
 
-    const payload = {
-      name,
-      guests,
-      status,
-      note,
-      ts: Date.now(),
-    };
+    const submitBtn = $('#rsvpSubmitBtn');
+    const originalContent = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span>Sending...</span>';
+    submitBtn.disabled = true;
 
-    const data = JSON.parse(localStorage.getItem('wedding_rsvp') || '[]');
-    data.push(payload);
-    localStorage.setItem('wedding_rsvp', JSON.stringify(data));
+    const messageText = `🎊 New Wedding RSVP
+💍 Event: Wedding of Ahmed & Sara
+👤 Guest Name: ${name}
+✅ Attendance: ${status === 'joyfully_attending' ? 'Attending' : 'Declining'}
+👥 Number of Guests: ${guests}
+📝 Message Type: Normal Greeting
+🤫 Message Content: ${note || 'No message left'}`;
 
-    form.reset();
-    guestsInput.value = '1';
-    success.textContent = status === 'joyfully_attending'
-      ? 'RSVP received. We cannot wait to celebrate with you.'
-      : 'Your RSVP is received with love. You will be missed dearly.';
-    success.style.color = '';
-    gsap.fromTo('.rsvp-card', { y: 0 }, { y: -3, duration: 0.14, yoyo: true, repeat: 1 });
+    const token = '8789687204:AAGUWQwHK1n08z4GPG30odQ8cTR16vK6WUw';
+    const chatId = '5577896692';
+    const tgUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
+
+    fetch(tgUrl, { method: 'POST' })
+      .then(response => {
+        if (response.ok) {
+          form.reset();
+          guestsInput.value = '1';
+          success.textContent = status === 'joyfully_attending'
+            ? 'RSVP received. We cannot wait to celebrate with you.'
+            : 'Your RSVP is received with love. You will be missed dearly.';
+          success.style.color = '';
+          gsap.fromTo('.rsvp-card', { y: 0 }, { y: -3, duration: 0.14, yoyo: true, repeat: 1 });
+        } else {
+          success.textContent = 'Oops! There was a problem submitting your RSVP.';
+          success.style.color = '#8B2D2D';
+        }
+      })
+      .catch(error => {
+        success.textContent = 'Oops! A network error occurred. Please try again.';
+        success.style.color = '#8B2D2D';
+      })
+      .finally(() => {
+        submitBtn.innerHTML = originalContent;
+        submitBtn.disabled = false;
+      });
   });
 }
 
