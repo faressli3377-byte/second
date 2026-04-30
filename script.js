@@ -27,7 +27,8 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
   $('#enterBtn').addEventListener('click', handleEnter);
 
-  function handleEnter() {
+ function handleEnter() {
+    startMusic();
     const tl2 = gsap.timeline();
     tl2.to('#splash', { opacity: 0, duration: 1, ease: 'power2.inOut' })
       .call(() => {
@@ -40,6 +41,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
         initRoots();
         initRSVP();
         initGuestbook();
+        initCountdown();
         spawnPetals();
         updateNavDots();
         $('#musicToggle').classList.remove('hidden');
