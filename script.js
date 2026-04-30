@@ -28,7 +28,6 @@ const $$ = (sel) => document.querySelectorAll(sel);
   $('#enterBtn').addEventListener('click', handleEnter);
 
   function handleEnter() {
-    startMusic();
     const tl2 = gsap.timeline();
     tl2.to('#splash', { opacity: 0, duration: 1, ease: 'power2.inOut' })
       .call(() => {
@@ -76,36 +75,17 @@ function createParticles() {
 }
 
 /* ============================================================
-   MUSIC — plays silently in background, no visible UI
+   BACKGROUND MUSIC
    ============================================================ */
-let musicPlaying = false;
-
-function startMusic() {
-  const audio = $('#bgMusic');
-  if (!audio) return;
-
-  // Explicit src for GitHub Pages compatibility
-  audio.src = './music.mp3';
-  audio.load();
-  audio.volume = 0.35;
-  audio.muted = false;
-
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(() => {
-      // Autoplay blocked — attach deferred retry on next user interaction
-      const retry = () => {
-        audio.play().catch(() => { });
-        window.removeEventListener('touchstart', retry);
-        window.removeEventListener('click', retry);
-        window.removeEventListener('keydown', retry);
-      };
-      window.addEventListener('touchstart', retry, { once: true, passive: true });
-      window.addEventListener('click', retry, { once: true, passive: true });
-      window.addEventListener('keydown', retry, { once: true });
+document.addEventListener('click', function() {
+  const audio = document.getElementById('weddingMusic');
+  if (audio) {
+    audio.play().catch(function(error) {
+      // Handle browser autoplay restrictions silently
+      console.warn("Autoplay blocked:", error);
     });
   }
-}
+}, { once: true });
 
 
 
@@ -210,33 +190,33 @@ function spawnPetals() {
    COUNTDOWN
    ============================================================ */
 function initCountdown() {
-    const target = new Date(2026, 4, 1, 18, 0, 0); // مايو = 4
+  const target = new Date(2026, 4, 1, 18, 0, 0); // مايو = 4
 
-    function tick() {
-        const diff = target - Date.now();
+  function tick() {
+    const diff = target - Date.now();
 
-        if (diff <= 0) {
-            $('#cd-days').textContent = '00';
-            $('#cd-hours').textContent = '00';
-            $('#cd-mins').textContent = '00';
-            $('#cd-secs').textContent = '00';
-            return;
-        }
-
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        const pad = (n) => String(n).padStart(2, '0');
-
-        $('#cd-days').textContent = pad(d);
-        $('#cd-hours').textContent = pad(h);
-        $('#cd-mins').textContent = pad(m);
-        $('#cd-secs').textContent = pad(s);
+    if (diff <= 0) {
+      $('#cd-days').textContent = '00';
+      $('#cd-hours').textContent = '00';
+      $('#cd-mins').textContent = '00';
+      $('#cd-secs').textContent = '00';
+      return;
     }
 
-    tick();
-    setInterval(tick, 1000);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const pad = (n) => String(n).padStart(2, '0');
+
+    $('#cd-days').textContent = pad(d);
+    $('#cd-hours').textContent = pad(h);
+    $('#cd-mins').textContent = pad(m);
+    $('#cd-secs').textContent = pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
 }
 
 /* ============================================================
