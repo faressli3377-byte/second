@@ -210,25 +210,33 @@ function spawnPetals() {
    COUNTDOWN
    ============================================================ */
 function initCountdown() {
-  const target = new Date('2026-05-01T18:00:00');
+    const target = new Date(2026, 4, 1, 18, 0, 0); // مايو = 4
 
-  function tick() {
-    const diff = Math.abs(target - Date.now());
+    function tick() {
+        const diff = target - Date.now();
 
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    const pad = (n) => String(n).padStart(2, '0');
+        if (diff <= 0) {
+            $('#cd-days').textContent = '00';
+            $('#cd-hours').textContent = '00';
+            $('#cd-mins').textContent = '00';
+            $('#cd-secs').textContent = '00';
+            return;
+        }
 
-    $('#cd-days').textContent = pad(d);
-    $('#cd-hours').textContent = pad(h);
-    $('#cd-mins').textContent = pad(m);
-    $('#cd-secs').textContent = pad(s);
-  }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const pad = (n) => String(n).padStart(2, '0');
 
-  tick();
-  setInterval(tick, 1000);
+        $('#cd-days').textContent = pad(d);
+        $('#cd-hours').textContent = pad(h);
+        $('#cd-mins').textContent = pad(m);
+        $('#cd-secs').textContent = pad(s);
+    }
+
+    tick();
+    setInterval(tick, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', initCountdown);
