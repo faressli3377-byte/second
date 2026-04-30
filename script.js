@@ -77,12 +77,12 @@ function createParticles() {
 /* ============================================================
    BACKGROUND MUSIC
    ============================================================ */
-document.addEventListener('click', () => { 
+function startMusic() {
   const audio = document.getElementById('weddingMusic');
-  if (audio) {
-    audio.play().catch(e => console.warn("Autoplay blocked:", e));
-  }
-}, { once: true });
+  if (!audio) return;
+  audio.volume = 0.35;
+  audio.play().catch(() => {});
+}
 
 
 
