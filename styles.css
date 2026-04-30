@@ -1062,140 +1062,7 @@ button {
   margin-top: -16px;
 }
 
-/* ============================================================
-   GUESTBOOK
-   ============================================================ */
-.guestbook {
-  background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
-  position: relative;
-  overflow: hidden;
-}
 
-.guestbook-bg {
-  position: absolute;
-  inset: -16% 0;
-  background:
-    radial-gradient(circle at 80% 18%, rgba(212, 169, 106, 0.12), transparent 34%),
-    radial-gradient(circle at 22% 84%, rgba(184, 147, 90, 0.1), transparent 35%);
-  pointer-events: none;
-}
-
-.guestbook .section-title {
-  color: var(--cream);
-}
-
-.guestbook .section-subtitle {
-  color: var(--sand);
-}
-
-.guestbook-glass {
-  max-width: 680px;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(184, 147, 90, 0.34);
-  backdrop-filter: blur(20px);
-  padding: 48px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.guestbook-label {
-  display: block;
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  color: var(--cream);
-  margin-bottom: 8px;
-}
-
-.guestbook-subtext {
-  font-size: 0.82rem;
-  color: var(--text-lt);
-  margin-bottom: 24px;
-  line-height: 1.7;
-}
-
-.guestbook-textarea {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(184, 147, 90, 0.25);
-  color: var(--cream);
-  font-family: var(--sans);
-  font-size: 0.9rem;
-  line-height: 1.8;
-  padding: 20px;
-  resize: none;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.guestbook-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-.guestbook-textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(184, 147, 90, 0.16);
-  transform: translateY(-1px);
-}
-
-.guestbook-footer-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
-}
-
-.guestbook-chars {
-  font-size: 0.75rem;
-  color: var(--text-lt);
-}
-
-.send-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
-  background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-size: 0.82rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-}
-
-.send-btn:hover {
-  background: var(--gold);
-  color: var(--dark);
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
-}
-
-.guestbook-success {
-  display: none;
-  text-align: center;
-  margin-top: 24px;
-  padding: 24px;
-  background: rgba(184, 147, 90, 0.1);
-  border: 1px solid rgba(184, 147, 90, 0.3);
-}
-
-.guestbook-success.visible {
-  display: block;
-}
-
-.success-heart {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.guestbook-success p {
-  color: var(--beige);
-  font-family: var(--corm);
-  font-style: italic;
-  font-size: 1rem;
-}
 
 /* ============================================================
    FOOTER
@@ -1440,18 +1307,9 @@ button {
     font-size: 0.62rem;
   }
 
-  .guestbook-glass {
-    padding: 28px 20px;
-  }
 
   .rsvp-card {
     padding: 26px 18px;
-  }
-
-  .guestbook-footer-row {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-end;
   }
 
   .venue-img-grid {
