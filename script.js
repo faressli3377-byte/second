@@ -324,16 +324,3 @@ function updateNavDots() {
     });
   });
 }
-// تشغيل الموسيقى مع أول ضغطة في الصفحة
-const startMusic = () => {
-    const audio = document.getElementById('weddingMusic');
-    if (audio) {
-        audio.play().catch(e => console.log("Music play deferred"));
-        // بنشيل الـ Listener عشان ميتنفذش مع كل ضغطة
-        document.removeEventListener('click', startMusic);
-        document.removeEventListener('touchstart', startMusic);
-    }
-};
-
-document.addEventListener('click', startMusic);
-document.addEventListener('touchstart', startMusic);
