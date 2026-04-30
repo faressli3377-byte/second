@@ -44,7 +44,6 @@ const $$ = (sel) => document.querySelectorAll(sel);
         initScrollAnimations();
         initRoots();
         initRSVP();
-        initGuestbook();
         spawnPetals();
         updateNavDots();
         $('#musicToggle').classList.remove('hidden');
@@ -217,61 +216,7 @@ document.addEventListener('DOMContentLoaded', initCountdown);
 /* ============================================================
    GUESTBOOK
    ============================================================ */
-function initGuestbook() {
-  const textarea = $('#wishInput');
-  const charCount = $('#charCount');
-  const MAX = 500;
 
-  textarea.addEventListener('input', () => {
-    const len = textarea.value.length;
-    if (len > MAX) textarea.value = textarea.value.slice(0, MAX);
-    charCount.textContent = `${Math.min(len, MAX)} / ${MAX}`;
-  });
-
-  $('#sendWishBtn').addEventListener('click', () => {
-    const val = textarea.value.trim();
-    if (!val) { textarea.focus(); return; }
-    const submitBtn = $('#sendWishBtn');
-    const originalContent = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span>Sending...</span>';
-    submitBtn.disabled = true;
-
-    const messageText = `🎊 New Wedding RSVP
-💍 Event: Wedding of Ahmed & Sara
-👤 Guest Name: Anonymous
-✅ Attendance: N/A
-👥 Number of Guests: N/A
-📝 Message Type: Secret Message
-🤫 Message Content: ${val}`;
-
-    const token = '8789687204:AAGUWQwHK1n08z4GPG30odQ8cTR16vK6WUw';
-    const chatId = '5577896692';
-    const tgUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
-
-    fetch(tgUrl, { method: 'POST' })
-      .then(response => {
-        if (response.ok) {
-          gsap.to('.guestbook-glass', { y: -4, duration: 0.15, yoyo: true, repeat: 1 });
-          textarea.value = '';
-          charCount.textContent = `0 / ${MAX}`;
-          const success = $('#wishSuccess');
-          success.classList.add('visible');
-          gsap.from(success, { opacity: 0, y: 10, duration: 0.6, ease: 'power2.out' });
-        } else {
-          alert('Oops! There was a problem sending your secret message.');
-        }
-      })
-      .catch(error => {
-        alert('Oops! A network error occurred.');
-      })
-      .finally(() => {
-        submitBtn.innerHTML = originalContent;
-        submitBtn.disabled = false;
-      });
-  });
-}
-
-/* ============================================================
    RSVP
    ============================================================ */
 function initRSVP() {
@@ -302,13 +247,11 @@ function initRSVP() {
     submitBtn.innerHTML = '<span>Sending...</span>';
     submitBtn.disabled = true;
 
-    const messageText = `🎊 New Wedding RSVP
-💍 Event: Wedding of Ahmed & Sara
-👤 Guest Name: ${name}
-✅ Attendance: ${status === 'joyfully_attending' ? 'Attending' : 'Declining'}
-👥 Number of Guests: ${guests}
-📝 Message Type: Normal Greeting
-🤫 Message Content: ${note || 'No message left'}`;
+    const messageText = `🎊 New RSVP
+👤 Guest: ${name}
+✅ Status: ${status === 'joyfully_attending' ? 'Attending' : 'Declining'}
+👥 Guests: ${guests}
+💬 Message: ${note || 'No message left'}`;
 
     const token = '8789687204:AAGUWQwHK1n08z4GPG30odQ8cTR16vK6WUw';
     const chatId = '5577896692';
@@ -344,7 +287,7 @@ function initRSVP() {
    NAV DOTS
    ============================================================ */
 function updateNavDots() {
-  const sections = ['hero', 'roots', 'program', 'dresscode', 'venue', 'rsvp', 'guestbook'];
+  const sections = ['hero', 'roots', 'program', 'dresscode', 'venue', 'rsvp'];
   const dots = $$('.nav-dot');
 
   function setActive() {
