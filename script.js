@@ -28,6 +28,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
   $('#enterBtn').addEventListener('click', handleEnter);
 
   function handleEnter() {
+    startMusic();
     const tl2 = gsap.timeline();
     tl2.to('#splash', { opacity: 0, duration: 1, ease: 'power2.inOut' })
       .call(() => {
@@ -75,17 +76,36 @@ function createParticles() {
 }
 
 /* ============================================================
-   BACKGROUND MUSIC
+   MUSIC — plays silently in background, no visible UI
    ============================================================ */
-document.addEventListener('click', function() {
-  const audio = document.getElementById('weddingMusic');
-  if (audio) {
-    audio.play().catch(function(error) {
-      // Handle browser autoplay restrictions silently
-      console.warn("Autoplay blocked:", error);
+let musicPlaying = false;
+
+function startMusic() {
+  const audio = $('#bgMusic');
+  if (!audio) return;
+
+  // Explicit src for GitHub Pages compatibility
+  audio.src = './music.mp3';
+  audio.load();
+  audio.volume = 0.35;
+  audio.muted = false;
+
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      // Autoplay blocked — attach deferred retry on next user interaction
+      const retry = () => {
+        audio.play().catch(() => { });
+        window.removeEventListener('touchstart', retry);
+        window.removeEventListener('click', retry);
+        window.removeEventListener('keydown', retry);
+      };
+      window.addEventListener('touchstart', retry, { once: true, passive: true });
+      window.addEventListener('click', retry, { once: true, passive: true });
+      window.addEventListener('keydown', retry, { once: true });
     });
   }
-}, { once: true });
+}
 
 
 
@@ -186,6 +206,9 @@ function spawnPetals() {
   }
 }
 
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
 /* ============================================================
    COUNTDOWN
    ============================================================ */
@@ -328,5 +351,3 @@ function updateNavDots() {
     });
   });
 }
-
-
