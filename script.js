@@ -27,8 +27,12 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
   $('#enterBtn').addEventListener('click', handleEnter);
 
- function handleEnter() {
-    startMusic();
+  function handleEnter() {
+    const audio = document.getElementById('weddingMusic');
+    if (audio) {
+      audio.play().catch(e => console.warn("Autoplay blocked:", e));
+    }
+
     const tl2 = gsap.timeline();
     tl2.to('#splash', { opacity: 0, duration: 1, ease: 'power2.inOut' })
       .call(() => {
@@ -41,7 +45,6 @@ const $$ = (sel) => document.querySelectorAll(sel);
         initRoots();
         initRSVP();
         initGuestbook();
-        initCountdown();
         spawnPetals();
         updateNavDots();
         $('#musicToggle').classList.remove('hidden');
@@ -77,14 +80,8 @@ function createParticles() {
 }
 
 /* ============================================================
-   BACKGROUND MUSIC
+   BACKGROUND MUSIC - Triggered via #enterBtn
    ============================================================ */
-function startMusic() {
-  const audio = document.getElementById('weddingMusic');
-  if (!audio) return;
-  audio.volume = 0.35;
-  audio.play().catch(() => {});
-}
 
 
 
