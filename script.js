@@ -239,8 +239,6 @@ function initCountdown() {
     setInterval(tick, 1000);
 }
 
-document.addEventListener('DOMContentLoaded', initCountdown);
-
 /* ============================================================
    GUESTBOOK
    ============================================================ */
